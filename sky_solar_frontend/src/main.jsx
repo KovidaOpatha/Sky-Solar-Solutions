@@ -6,5 +6,6 @@ import Loginpage from './pages/loginpage.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Loginpage />
-  </React.StrictMode>,
+    </React.StrictMode>
 )
+
