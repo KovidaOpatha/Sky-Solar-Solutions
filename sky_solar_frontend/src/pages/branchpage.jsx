@@ -23,7 +23,7 @@ const BranchPage = () => {
       name: 'INVERTERS',
       description: 'Description of Category 2',
       products: [
-        { id: 1, name: 'Product 3', description: 'Description of Product 3', price: '$30', stock: 80 },
+        { id: 1, name: 'Product 3', description: 'Description of Product 3', price: '$30', stock: 70 },
         { id: 2, name: 'Product 4', description: 'Description of Product 4', price: '$40', stock: 90 },
         { id: 3, name: 'Product 4', description: 'Description of Product 4', price: '$40', stock: 95 },
         { id: 4, name: 'JINKO 560W', description: 'Description of Product 1', price: '$10', stock: 110 },
