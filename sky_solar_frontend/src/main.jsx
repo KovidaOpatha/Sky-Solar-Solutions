@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
-import StockPage from './pages/stockpage';
-import BranchPage from './pages/branchpage';
+//import StockPage from './pages/stock-page';
+//import BranchPage from './pages/branchpage';
+import CategoryPage from './pages/categorypage';
 import MainLayout from './component/shared/mainlayout';
 import HomePage from './pages/homepage'; // Import the HomePage component
+import stockPage from './pages/stockpage';
 
 const router = createBrowserRouter([
   {
@@ -16,21 +18,18 @@ const router = createBrowserRouter([
         element:<HomePage/>,
       },
       {
-        path:"galle/category",
-        element:<StockPage/>,
+        path:"Galle/category",  
+        element:<CategoryPage/>,
       },
       {
         path:"Matara/category",
-        element:<StockPage/>
+        element:<CategoryPage/>
       },
       {
         path:"Buttala/category",
-        element:<StockPage/>
+        element:<CategoryPage/>
       },
-      {
-        path:"galle/category/stock",
-        element:<BranchPage/>
-      }
+      
       
     ]
   }
