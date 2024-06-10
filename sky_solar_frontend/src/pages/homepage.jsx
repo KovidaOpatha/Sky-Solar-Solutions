@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
@@ -10,6 +10,16 @@ const HomePage = () => {
   ];
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Disable scrolling when HomePage component mounts
+    document.body.style.overflow = 'hidden';
+
+    // Re-enable scrolling when HomePage component unmounts
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   const handleBranchClick = (branchName) => {
     // Navigate to the branch-specific page (assuming you have routes set up for each branch)
