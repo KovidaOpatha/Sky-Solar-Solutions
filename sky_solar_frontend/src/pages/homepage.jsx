@@ -11,9 +11,10 @@ const HomePage = () => {
 
   const navigate = useNavigate();
 
-  const handleBranchClick = (branchId) => {
+  const handleBranchClick = (branchName) => {
     // Navigate to the branch-specific page (assuming you have routes set up for each branch)
-    navigate(`/branch/${branchId}`);
+    //navigate(`/branch/${branchId}`);
+    navigate(`${branchName}/category`)
   };
 
   return (
@@ -24,7 +25,7 @@ const HomePage = () => {
           <div
             key={branch.id}
             className="w-48 h-48 flex items-center justify-center m-4 bg-orange-500 text-white text-2xl font-bold cursor-pointer rounded-md shadow-lg transition-transform transform hover:scale-105 hover:bg-orange-600 active:scale-95"
-            onClick={() => handleBranchClick(branch.id)}
+            onClick={() => handleBranchClick(branch.name)}
           >
             {branch.name}
           </div>
