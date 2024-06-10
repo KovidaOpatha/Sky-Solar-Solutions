@@ -52,7 +52,7 @@ const StockPage = () => {
     // Add more categories as needed
   ];
 
-  const category = categories.find(cat => cat.id === parseInt(categoryId));
+  const category = categories.find(category => category.id === parseInt(categoryId));
 
   if (!category) {
     return <div>Category not found</div>;
@@ -63,6 +63,7 @@ const StockPage = () => {
       <div className="w-full p-2 rounded-md shadow-sm border-4 border-orange-500 mb-4">
         <h3 className="text-lg font-bold text-orange-500 text-center mb-2">{category.name}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
           {category.products.map(product => (
             <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-black">
               <div className="flex justify-between items-center p-4">

@@ -18,19 +18,19 @@ const router = createBrowserRouter([
         element:<HomePage/>,
       },
       {
-        path:"Galle/category",  
+        path:":branchName/category",  
         element:<CategoryPage/>,
       },
-      {
+      /*{
         path:"Matara/category",
         element:<CategoryPage/>
       },
       {
         path:"Buttala/category",
         element:<CategoryPage/>
-      },
+      },*/
       {
-        path:"category/1",
+        path:"category/:categoryId",
         element:<StockPage/>
       }
       
