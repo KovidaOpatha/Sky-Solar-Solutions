@@ -7,7 +7,7 @@ import './index.css';
 import CategoryPage from './pages/categorypage';
 import MainLayout from './component/shared/mainlayout';
 import HomePage from './pages/homepage'; // Import the HomePage component
-import stockPage from './pages/stockpage';
+import StockPage from './pages/stockpage';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +29,10 @@ const router = createBrowserRouter([
         path:"Buttala/category",
         element:<CategoryPage/>
       },
+      {
+        path:"category/1",
+        element:<StockPage/>
+      }
       
       
     ]

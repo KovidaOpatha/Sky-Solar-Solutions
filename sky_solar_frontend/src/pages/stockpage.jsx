@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
-const stockPage = () => {
+const StockPage = () => {
   const { categoryId } = useParams();
 
   const categories = [
@@ -86,4 +86,4 @@ const stockPage = () => {
   );
 };
 
-export default stockPage;
+export default StockPage;
