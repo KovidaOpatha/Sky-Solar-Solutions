@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import ReserveOverlay from './reserveoverlay';
+import RestockOverlay from './restockoverlay'; // Make sure to import with correct casing
 
 const CategoryPage = () => {
   const { branchName } = useParams();
   const [categories, setCategories] = useState([]);
   const [showReserveOverlay, setShowReserveOverlay] = useState(false);
+  const [showRestockOverlay, setShowRestockOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -28,15 +30,20 @@ const CategoryPage = () => {
   }, [branchName]);
 
   const handleCategoryClick = (categoryId) => {
-    navigate(`/${branchName}/category/${categoryId}`); // Navigate to the category-specific page with branch name
+    navigate(`/${branchName}/category/${categoryId}`);
   };
+
   const handleReserveClick = () => {
     setShowReserveOverlay(true);
   };
 
+  const handleRestockClick = () => {
+    setShowRestockOverlay(true);
+  };
+
   const handleReserve = (selectedProducts) => {
     console.log('Reserved products:', selectedProducts);
-    setShowReserveOverlay(false); // Close the overlay after reservation
+    setShowReserveOverlay(false);
   };
 
   if (loading) {
@@ -50,12 +57,20 @@ const CategoryPage = () => {
   return (
     <div className="flex-grow flex flex-col justify-center items-center bg-white p-8 overflow-hidden">
       <h1 className="text-4xl font-bold text-orange-600 mb-8">Product Categories</h1>
-      <button
-        onClick={handleReserveClick}
-        className="mb-8 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        Reserve Stock
-      </button>
+      <div className="flex mb-8">
+        <button
+          onClick={handleReserveClick}
+          className="mr-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Reserve Stock
+        </button>
+        <button
+          onClick={handleRestockClick}
+          className="bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          Restock
+        </button>
+      </div>
       <div className="flex flex-wrap justify-center overflow-hidden">
         {categories.map((category) => (
           <div
@@ -69,6 +84,9 @@ const CategoryPage = () => {
       </div>
       {showReserveOverlay && (
         <ReserveOverlay categories={categories} onClose={() => setShowReserveOverlay(false)} onReserve={handleReserve} />
+      )}
+      {showRestockOverlay && (
+        <RestockOverlay categories={categories} branchName={branchName} onClose={() => setShowRestockOverlay(false)} />
       )}
     </div>
   );
