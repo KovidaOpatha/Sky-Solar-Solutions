@@ -1,58 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Overlay from './overlay'; // Import the Overlay component
 
 const StockPage = () => {
   const { categoryId } = useParams();
+  const [category, setCategory] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const categories = [
-    {
-      id: 1,
-      name: 'SOLAR PANELS',
-      products: [
-        { id: 1, name: 'PANEL 1', stock: 100 },
-        { id: 2, name: 'PANEL 2', stock: 200 },
-        { id: 3, name: 'PANEL 3', stock: 150 },
-        { id: 4, name: 'PANEL 4', stock: 120 },
-      ]
-    },
-    {
-      id: 2,
-      name: 'INVERTERS',
-      products: [
-        { id: 1, name: 'INVERTER 1', stock: 70 },
-        { id: 2, name: 'INVERTER 2', stock: 90 },
-        { id: 3, name: 'INVERTER 3', stock: 95 },
-        { id: 4, name: 'INVERTER 4', stock: 110 },
-      ]
-    },
-    {
-      id: 3,
-      name: 'ALUMINIUM',
-      products: [
-        { id: 1, name: 'ALM 1', stock: 75 },
-        { id: 2, name: 'ALM 2', stock: 85 },
-        { id: 3, name: 'ALM 3', stock: 95 },
-        { id: 4, name: 'ALM 4', stock: 130 },
-      ]
-    },
-    {
-      id: 4,
-      name: 'PVC',
-      products: [
-        { id: 1, name: 'PVC 1', stock: 50 },
-        { id: 2, name: 'PVC 2', stock: 60 }
-      ]
-    },
-    // Add more categories as needed
-  ];
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/stocks/galle`);
+        const foundCategory = response.data[0]?.categories.find(cat => cat._id === categoryId);
+        setCategory(foundCategory);
+      } catch (error) {
+        console.error('Error fetching category:', error);
+      }
+    };
 
-  const category = categories.find(category => category.id === parseInt(categoryId));
-
-  if (!category) {
-    return <div>Category not found</div>;
-  }
+    fetchCategory();
+  }, [categoryId]);
 
   const handleManageStockClick = () => {
     setShowOverlay(true);
@@ -60,8 +28,13 @@ const StockPage = () => {
 
   const handleSave = () => {
     // Handle save logic here
+    window.location.reload(); // Reload the page to reflect the updated stock
     setShowOverlay(false);
   };
+
+  if (!category) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center px-4 py-8">
@@ -73,22 +46,22 @@ const StockPage = () => {
       {showOverlay && (
         <Overlay
           category={category}
-          onClose={() => setShowOverlay(false)}
-          onSave={handleSave}
+          // onClose={() => setShowOverlay(false)}
+          onClose={handleSave}
         />
       )}
       <div className="w-full p-2 rounded-md shadow-sm border-4 border-orange-500 mb-4">
-        <h3 className="text-lg font-bold text-orange-500 text-center mb-2">{category.name}</h3>
+        <h3 className="text-lg font-bold text-orange-500 text-center mb-2">{category.category}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {category.products.map(product => (
-            <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-black">
+          {category.items.map(product => (
+            <div key={product._id} className="bg-white rounded-lg shadow-md overflow-hidden border border-black">
               <div className="flex justify-between items-center p-4">
                 <div className="flex-grow">
                   <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
                 </div>
                 <div className="flex items-center">
                   <div className="border border-black px-2 py-1 w-16 h-10 flex items-center justify-center rounded-md">
-                    <span className="text-gray-800 font-bold text-xl">{product.stock}</span>
+                    <span className="text-gray-800 font-bold text-xl">{product.remainingStock}</span>
                   </div>
                   {/* Removed the settings button here */}
                 </div>
