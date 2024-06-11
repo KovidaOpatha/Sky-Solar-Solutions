@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import ReserveOverlay from './reserveoverlay';
 
 const CategoryPage = () => {
+  const { branchName } = useParams();
   const [categories, setCategories] = useState([]);
   const [showReserveOverlay, setShowReserveOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -12,9 +13,8 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/stocks/galle');
+        const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
         if (response.data && response.data.length > 0) {
-          // Assuming the categories are stored in the 'categories' field of the response
           setCategories(response.data[0].categories);
         }
       } catch (error) {
@@ -25,20 +25,18 @@ const CategoryPage = () => {
     };
 
     fetchCategories();
-  }, []);
+  }, [branchName]);
 
   const handleCategoryClick = (categoryId) => {
-    navigate(`/category/${categoryId}`);
+    navigate(`/${branchName}/category/${categoryId}`); // Navigate to the category-specific page with branch name
   };
-
   const handleReserveClick = () => {
     setShowReserveOverlay(true);
   };
 
   const handleReserve = (selectedProducts) => {
-    // Handle reservation logic here
     console.log('Reserved products:', selectedProducts);
-    setShowReserveOverlay(false);
+    setShowReserveOverlay(false); // Close the overlay after reservation
   };
 
   if (loading) {
