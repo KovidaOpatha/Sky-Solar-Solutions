@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Overlay = ({ category, onClose }) => {
+const Overlay = ({ category , branchName , onClose }) => {
   const [products, setProducts] = useState(category.items);
 
   const handleSave = async () => {
     try {
       await Promise.all(products.map(product => {
-        return axios.post(`http://127.0.0.1:8000/stocks/galle`, {
+        return axios.post(`http://127.0.0.1:8000/stocks/${branchName}`, {
           productId: product._id,
           remainingStock: product.remainingStock
         });
       }));
+      console.log(branchName);
       alert('Stock updated successfully');
       onClose();
     } catch (error) {

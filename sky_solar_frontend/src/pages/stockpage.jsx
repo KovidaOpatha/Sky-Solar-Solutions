@@ -4,14 +4,14 @@ import axios from 'axios';
 import Overlay from './overlay'; // Import the Overlay component
 
 const StockPage = () => {
-  const { categoryId } = useParams();
+  const { categoryId, branchName } = useParams(); // Fetch categoryId and branchName from URL
   const [category, setCategory] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
 
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/stocks/galle`);
+        const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
         const foundCategory = response.data[0]?.categories.find(cat => cat._id === categoryId);
         setCategory(foundCategory);
       } catch (error) {
@@ -20,7 +20,7 @@ const StockPage = () => {
     };
 
     fetchCategory();
-  }, [categoryId]);
+  }, [categoryId, branchName]); // Add branchName to dependency array
 
   const handleManageStockClick = () => {
     setShowOverlay(true);
@@ -46,6 +46,7 @@ const StockPage = () => {
       {showOverlay && (
         <Overlay
           category={category}
+          branchName = {branchName}
           // onClose={() => setShowOverlay(false)}
           onClose={handleSave}
         />

@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element:<CategoryPage/>
       },*/
       {
-        path:"category/:categoryId",
+        path:":branchName/category/:categoryId",
         element:<StockPage/>
       }
       
