@@ -11,38 +11,38 @@ const StockPage = () => {
       id: 1,
       name: 'SOLAR PANELS',
       products: [
-        { id: 1, name: 'JINKO 560W', stock: 100 },
-        { id: 2, name: 'JINKO 590W', stock: 200 },
-        { id: 3, name: 'JA 560W', stock: 150 },
-        { id: 4, name: 'JA 560W', stock: 120 },
+        { id: 1, name: 'PANEL 1', stock: 100 },
+        { id: 2, name: 'PANEL 2', stock: 200 },
+        { id: 3, name: 'PANEL 3', stock: 150 },
+        { id: 4, name: 'PANEL 4', stock: 120 },
       ]
     },
     {
       id: 2,
       name: 'INVERTERS',
       products: [
-        { id: 1, name: 'Product 3', stock: 70 },
-        { id: 2, name: 'Product 4', stock: 90 },
-        { id: 3, name: 'Product 4', stock: 95 },
-        { id: 4, name: 'JINKO 560W', stock: 110 },
+        { id: 1, name: 'INVERTER 1', stock: 70 },
+        { id: 2, name: 'INVERTER 2', stock: 90 },
+        { id: 3, name: 'INVERTER 3', stock: 95 },
+        { id: 4, name: 'INVERTER 4', stock: 110 },
       ]
     },
     {
       id: 3,
       name: 'ALUMINIUM',
       products: [
-        { id: 1, name: 'Product 3', stock: 75 },
-        { id: 2, name: 'Product 4', stock: 85 },
-        { id: 3, name: 'Product 4', stock: 95 },
-        { id: 4, name: 'JINKO 560W', stock: 130 },
+        { id: 1, name: 'ALM 1', stock: 75 },
+        { id: 2, name: 'ALM 2', stock: 85 },
+        { id: 3, name: 'ALM 3', stock: 95 },
+        { id: 4, name: 'ALM 4', stock: 130 },
       ]
     },
     {
       id: 4,
       name: 'PVC',
       products: [
-        { id: 1, name: 'Product 1', stock: 50 },
-        { id: 2, name: 'Product 2', stock: 60 }
+        { id: 1, name: 'PVC 1', stock: 50 },
+        { id: 2, name: 'PVC 2', stock: 60 }
       ]
     },
     // Add more categories as needed

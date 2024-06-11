@@ -1,0 +1,106 @@
+import React, { useState } from 'react';
+
+const ReserveOverlay = ({ categories, onClose, onReserve }) => {
+  const [selectedProducts, setSelectedProducts] = useState(categories.map(category => ({
+    categoryId: category.id,
+    products: [{ productId: category.products[0]?.id || null, quantity: 0 }],
+  })));
+
+  const handleProductChange = (categoryId, productId, quantity, index) => {
+    setSelectedProducts(prevSelected => prevSelected.map(category =>
+      category.categoryId === categoryId
+        ? {
+          ...category,
+          products: category.products.map((product, i) =>
+            i === index ? { productId, quantity } : product
+          ),
+        }
+        : category
+    ));
+  };
+
+  const addProductInput = (categoryId) => {
+    setSelectedProducts(prevSelected => prevSelected.map(category =>
+      category.categoryId === categoryId
+        ? {
+          ...category,
+          products: [...category.products, { productId: category.products[0]?.productId || null, quantity: 0 }],
+        }
+        : category
+    ));
+  };
+
+  const handleReserve = () => {
+    const reservation = selectedProducts.flatMap(category =>
+      category.products.map(product => ({
+        categoryId: category.categoryId,
+        productId: product.productId,
+        quantity: product.quantity,
+      }))
+    );
+    onReserve(reservation);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-11/12 max-w-3xl">
+        <h2 className="text-2xl font-bold mb-4">Reserve Stock</h2>
+        {categories.map((category, catIndex) => (
+          <div key={category.id} className="mb-4">
+            <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
+            {selectedProducts[catIndex].products.map((product, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <span className="flex-grow">{`Product ${index + 1}`}</span>
+                <select
+                  value={product.productId || ''}
+                  className="mr-2 p-2 border rounded-md"
+                  onChange={(e) =>
+                    handleProductChange(category.id, parseInt(e.target.value, 10), product.quantity, index)
+                  }
+                >
+                  {category.products.map(p => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="Quantity"
+                  value={product.quantity}
+                  className="w-20 p-2 border rounded-md"
+                  onChange={(e) =>
+                    handleProductChange(category.id, product.productId, parseInt(e.target.value, 10), index)
+                  }
+                />
+              </div>
+            ))}
+            <button
+              onClick={() => addProductInput(category.id)}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Add Product
+            </button>
+          </div>
+        ))}
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={onClose}
+            className="bg-red-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Close
+          </button>
+          <button
+            onClick={handleReserve}
+            className="bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            Reserve
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ReserveOverlay;
