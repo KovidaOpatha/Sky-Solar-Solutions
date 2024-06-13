@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../src/assets/skysolarlogo.jpg'
 
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+
 const NavigationBar = () => {
   return (
     <nav className="bg-orange-500 text-white p-4 shadow-lg fixed top-0 left-0 w-full z-10 md:h-20">
@@ -13,6 +15,18 @@ const NavigationBar = () => {
           <Link to="/stock" className="hover:text-gray-300">Stock</Link>
           <Link to="/about" className="hover:text-gray-300">About</Link>
           <Link to="/contact" className="hover:text-gray-300">Contact</Link>
+          <div className="flex gap-x-4 items-center">
+                <SignedIn>
+                    <UserButton afterSignOutUrl="/sign-in"/>
+                </SignedIn>
+                <SignedOut>
+                    <Link to={"/sign-in"}>Sign In</Link>
+                    <button asChild>
+                        <Link to={"/sign-up"}>Sign Up</Link>
+                    </button>
+                </SignedOut>
+          </div>
+        
         </div>
       </div>
     </nav>
