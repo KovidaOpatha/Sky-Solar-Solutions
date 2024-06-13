@@ -28,7 +28,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-white p-8">
+    <div className=" flex flex-col justify-center items-center bg-white p-8">
       <h1 className="text-4xl font-bold text-orange-600 mb-8">Our Branches</h1>
       <div className="flex flex-wrap justify-center">
         {branches.map(branch => (

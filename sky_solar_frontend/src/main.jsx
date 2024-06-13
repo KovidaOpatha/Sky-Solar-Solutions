@@ -8,6 +8,15 @@ import CategoryPage from './pages/categorypage';
 import MainLayout from './component/shared/mainlayout';
 import HomePage from './pages/homepage'; // Import the HomePage component
 import StockPage from './pages/stockpage';
+import SignInPage from './pages/sign-in/sign-in.page';
+import SignUpPage from './pages/sign-up/sign-up.page';
+import { ClerkProvider } from '@clerk/clerk-react';
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key")
+};
 
 const router = createBrowserRouter([
   {
@@ -32,16 +41,25 @@ const router = createBrowserRouter([
       {
         path:":branchName/category/:categoryId",
         element:<StockPage/>
-      }
-      
-      
-    ]
+      },  
+    ],
+    
+  },
+  {
+    path:"/sign-in",
+    element:<SignInPage/>,
+  },
+  {
+    path:"/sign-up",
+    element:<SignUpPage/>
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <RouterProvider router={router}/>
+    </ClerkProvider>
   </React.StrictMode>
 )
 
