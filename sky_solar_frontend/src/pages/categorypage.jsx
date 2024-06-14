@@ -72,13 +72,13 @@ const CategoryPage = () => {
         </button>
         <button
           onClick={handleRestockClick}
-          className="mr-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="mr-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Restock
         </button>
         <button
           onClick={handleAddItemsClick}
-          className="bg-purple-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Add Items
         </button>
@@ -88,7 +88,7 @@ const CategoryPage = () => {
           {categories.map((category) => (
             <div
               key={category._id}
-              className="w-full h-32 flex items-center justify-center bg-orange-500 text-white text-2xl font-bold cursor-pointer rounded-md shadow-lg transition-transform transform hover:scale-105 hover:bg-orange-600 active:scale-95 sm:w-40 md:w-48 md:h-48"
+              className="w-full h-32 flex items-center justify-center bg-orange-500 text-white text-2xl font-bold cursor-pointer rounded-md shadow-lg transition-transform transform hover:scale-105 hover:bg-green-600 active:scale-95 sm:w-40 md:w-48 md:h-48"
               onClick={() => handleCategoryClick(category._id)}
             >
               {category.category}
