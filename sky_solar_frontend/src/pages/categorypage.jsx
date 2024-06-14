@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import ReserveOverlay from './reserveoverlay';
-import RestockOverlay from './restockoverlay'; // Make sure to import with correct casing
+import RestockOverlay from './restockoverlay';
+import AddItemsOverlay from './additems'; // Import the new AddItemsOverlay
 
 const CategoryPage = () => {
   const { branchName } = useParams();
   const [categories, setCategories] = useState([]);
   const [showReserveOverlay, setShowReserveOverlay] = useState(false);
   const [showRestockOverlay, setShowRestockOverlay] = useState(false);
+  const [showAddItemsOverlay, setShowAddItemsOverlay] = useState(false); // State for Add Items overlay
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -41,6 +43,10 @@ const CategoryPage = () => {
     setShowRestockOverlay(true);
   };
 
+  const handleAddItemsClick = () => {
+    setShowAddItemsOverlay(true);
+  };
+
   const handleReserve = (selectedProducts) => {
     console.log('Reserved products:', selectedProducts);
     setShowReserveOverlay(false);
@@ -55,7 +61,7 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className=" flex flex-col justify-center items-center bg-white p-8 overflow-hidden">
+    <div className="flex flex-col justify-center items-center bg-white p-8 overflow-hidden">
       <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Product Categories</h1>
       <div className="flex mb-8">
         <button
@@ -66,9 +72,15 @@ const CategoryPage = () => {
         </button>
         <button
           onClick={handleRestockClick}
-          className="bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="mr-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
           Restock
+        </button>
+        <button
+          onClick={handleAddItemsClick}
+          className="bg-purple-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        >
+          Add Items
         </button>
       </div>
       <div className="flex flex-wrap justify-center overflow-hidden">
@@ -87,6 +99,9 @@ const CategoryPage = () => {
       )}
       {showRestockOverlay && (
         <RestockOverlay categories={categories} branchName={branchName} onClose={() => setShowRestockOverlay(false)} />
+      )}
+      {showAddItemsOverlay && (
+        <AddItemsOverlay categories={categories} branchName={branchName} onClose={() => setShowAddItemsOverlay(false)} />
       )}
     </div>
   );
