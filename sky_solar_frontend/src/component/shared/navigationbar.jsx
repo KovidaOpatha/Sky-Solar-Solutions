@@ -11,8 +11,7 @@ const NavigationBar = () => {
         <Link to="/" className="text-2xl font-bold">
           <img src={logo} alt="logo" className='w-24 h-auto' />
         </Link>
-        <div className=" md:flex space-x-4"> {/* Hide on mobile */}
-          <Link to="/stock" className="hover:text-gray-300">Stock</Link>
+        <div className="flex space-x-4 items-center"> {/* Hide on mobile */}
           <Link to="/about" className="hover:text-gray-300">About</Link>
           <Link to="/contact" className="hover:text-gray-300">Contact</Link>
           <div className="flex gap-x-4 items-center">
@@ -26,7 +25,7 @@ const NavigationBar = () => {
                     </button>
                 </SignedOut>
           </div>
-        
+          
         </div>
       </div>
     </nav>
