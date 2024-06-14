@@ -83,16 +83,18 @@ const CategoryPage = () => {
           Add Items
         </button>
       </div>
-      <div className="flex flex-wrap justify-center overflow-hidden">
-        {categories.map((category) => (
-          <div
-            key={category._id}
-            className="w-48 h-48 flex items-center justify-center m-4 bg-orange-500 text-white text-2xl font-bold cursor-pointer rounded-md shadow-lg transition-transform transform hover:scale-105 hover:bg-orange-600 active:scale-95"
-            onClick={() => handleCategoryClick(category._id)}
-          >
-            {category.category}
-          </div>
-        ))}
+      <div className="flex justify-center overflow-hidden">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-screen-lg p-4">
+          {categories.map((category) => (
+            <div
+              key={category._id}
+              className="w-full h-32 flex items-center justify-center bg-orange-500 text-white text-2xl font-bold cursor-pointer rounded-md shadow-lg transition-transform transform hover:scale-105 hover:bg-orange-600 active:scale-95 sm:w-40 md:w-48 md:h-48"
+              onClick={() => handleCategoryClick(category._id)}
+            >
+              {category.category}
+            </div>
+          ))}
+        </div>
       </div>
       {showReserveOverlay && (
         <ReserveOverlay categories={categories} onClose={() => setShowReserveOverlay(false)} onReserve={handleReserve} />
