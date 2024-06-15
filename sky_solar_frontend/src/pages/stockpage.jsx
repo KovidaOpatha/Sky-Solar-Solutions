@@ -46,14 +46,17 @@ const StockPage = () => {
   return (
     <div className="flex flex-col justify-center items-center px-4 py-8">
       <div className="mb-4 flex justify-end w-full">
-        <button onClick={handleManageStockClick} className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button
+          onClick={handleManageStockClick}
+          className="bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        >
           Manage Stock
         </button>
       </div>
       {showOverlay && (
         <Overlay
           category={category}
-          branchName = {branchName}
+          branchName={branchName}
           onClose={handleSave}
         />
       )}
