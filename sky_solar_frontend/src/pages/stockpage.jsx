@@ -28,10 +28,17 @@ const StockPage = () => {
     setShowOverlay(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Handle save logic here
-    window.location.reload(); // Reload the page to reflect the updated stock
+    // window.location.reload(); // Reload the page to reflect the updated stock
     setShowOverlay(false);
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+      const foundCategory = response.data[0]?.categories.find(cat => cat._id === categoryId);
+      setCategory(foundCategory);
+    } catch (error) {
+      console.error('Error fetching category:', error);
+    }
   };
 
   if (!category) {
@@ -77,15 +84,17 @@ const StockPage = () => {
   return (
     <div className="flex flex-col justify-center items-center px-4 py-8">
       <div className="mb-4 flex justify-end w-full">
-        <button onClick={handleManageStockClick} className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button
+          onClick={handleManageStockClick}
+          className="bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        >
           Manage Stock
         </button>
       </div>
       {showOverlay && (
         <Overlay
           category={category}
-          branchName = {branchName}
-          // onClose={() => setShowOverlay(false)}
+          branchName={branchName}
           onClose={handleSave}
         />
       )}
@@ -102,7 +111,6 @@ const StockPage = () => {
                   <div className="border border-black px-2 py-1 w-16 h-10 flex items-center justify-center rounded-md">
                     <span className="text-gray-800 font-bold text-xl">{product.remainingStock}</span>
                   </div>
-                  {/* Removed the settings button here */}
                 </div>
               </div>
             </div>
