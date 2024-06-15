@@ -1,17 +1,42 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { FiTrash2 } from 'react-icons/fi';
 
-const ReserveOverlay = ({ categories, onClose, onReserve }) => {
+const ReserveOverlay = ({ categories, branchName, onClose }) => {
   const [selectedProducts, setSelectedProducts] = useState({});
 
   const handleProductChange = (categoryId, productId, quantity) => {
-    setSelectedProducts(prevSelected => ({
-      ...prevSelected,
-      [categoryId]: {
-        ...prevSelected[categoryId],
-        [productId]: quantity,
-      },
-    }));
+    const product = categories.find(category => category._id === categoryId)?.items.find(item => item._id === productId);
+    if (!product) return;
+
+    // Ensure quantity is within available stock range and is not negative
+    if (quantity >= 0 && quantity <= product.remainingStock) {
+      setSelectedProducts(prevSelected => ({
+        ...prevSelected,
+        [categoryId]: {
+          ...prevSelected[categoryId],
+          [productId]: quantity,
+        },
+      }));
+    } else if (quantity < 0) {
+      // If quantity is negative, set it to 0
+      setSelectedProducts(prevSelected => ({
+        ...prevSelected,
+        [categoryId]: {
+          ...prevSelected[categoryId],
+          [productId]: 0,
+        },
+      }));
+    } else {
+      // If quantity exceeds available stock, set it to available stock
+      setSelectedProducts(prevSelected => ({
+        ...prevSelected,
+        [categoryId]: {
+          ...prevSelected[categoryId],
+          [productId]: product.remainingStock,
+        },
+      }));
+    }
   };
 
   const removeProduct = (categoryId, productId) => {
@@ -25,17 +50,34 @@ const ReserveOverlay = ({ categories, onClose, onReserve }) => {
     });
   };
 
-  const handleReserve = () => {
-    const reservation = Object.keys(selectedProducts).flatMap(categoryId =>
-      Object.keys(selectedProducts[categoryId]).map(productId => ({
-        categoryId,
-        productId,
-        quantity: selectedProducts[categoryId][productId],
-      }))
-    );
-    onReserve(reservation);
+  const handleReserve = async () => {
+    try {
+      const updates = [];
+      for (const categoryId in selectedProducts) {
+        for (const productId in selectedProducts[categoryId]) {
+          const quantity = selectedProducts[categoryId][productId];
+          if (quantity > 0) {
+            updates.push({
+              productId,
+              remainingStock: categories
+                .find(category => category._id === categoryId)
+                .items.find(product => product._id === productId).remainingStock - quantity,
+            });
+          }
+        }
+      }
+  
+      await Promise.all(
+        updates.map(update => axios.post(`http://127.0.0.1:8000/stocks/${branchName}`, update))
+      );
+      alert('Stock reserved successfully');
+      onClose();
+    } catch (error) {
+      console.error('Error reserving stock:', error);
+      alert('Failed to reserve stock');
+    }
   };
-
+  
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto">
       <div className="bg-white p-4 md:p-8 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[80vh] overflow-y-auto">
@@ -56,18 +98,26 @@ const ReserveOverlay = ({ categories, onClose, onReserve }) => {
                 }}
               >
                 <option value="">Select Product</option>
-                {category.items.map(product => (
-                  <option key={product._id} value={product._id}>
-                    {product.name}
-                  </option>
-                ))}
+                {category.items.map(product => {
+                  if (product.remainingStock > 0) {
+                    return (
+                      <option key={product._id} value={product._id}>
+                        {product.name}
+                      </option>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
               </select>
               {selectedProducts[category._id] && Object.keys(selectedProducts[category._id]).map(productId => {
+                const product = category.items.find(item => item._id === productId);
                 const quantity = selectedProducts[category._id][productId];
                 if (quantity > 0) {
                   return (
                     <div key={productId} className="flex items-center mb-2 border-t border-gray-300 pt-2">
-                      <span className="mr-2">{category.items.find(item => item._id === productId).name}</span>
+                      <span className="mr-2">{product.name}</span>
+                      <span className="mr-2">(Available: {product.remainingStock})</span>
                       <div className="flex items-center ml-auto">
                         <input
                           type="number"
