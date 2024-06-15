@@ -21,7 +21,7 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+        const response = await axios.get(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}`);
         if (response.data && response.data.length > 0) {
           setCategories(response.data[0].categories);
         }
@@ -69,7 +69,7 @@ const CategoryPage = () => {
     setShowRestockOverlay(false);
     setLoading(true);
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+      const response = await axios.get(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}`);
       if (response.data && response.data.length > 0) {
         setCategories(response.data[0].categories);
       }

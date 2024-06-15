@@ -7,7 +7,7 @@ const Overlay = ({ category, branchName, onClose }) => {
   const handleSave = async () => {
     try {
       await Promise.all(products.map(product => {
-        return axios.post(`http://127.0.0.1:8000/stocks/${branchName}`, {
+        return axios.post(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}`, {
           productId: product._id,
           remainingStock: product.remainingStock
         });
