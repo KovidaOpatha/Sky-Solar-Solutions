@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 const HomePage = () => {
   const branches = [
     { id: 1, name: 'Galle' },
@@ -31,6 +32,7 @@ const HomePage = () => {
     <div className="flex flex-col justify-center items-center bg-white p-8">
       <h1 className="text-4xl font-bold text-orange-600 mb-8">Our Branches</h1>
       <div className="flex flex-wrap justify-center">
+        
         {branches.map(branch => (
           <div
             key={branch.id}

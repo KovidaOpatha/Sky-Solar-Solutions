@@ -5,8 +5,11 @@ import ReserveOverlay from './reserveoverlay';
 import RestockOverlay from './restockoverlay';
 import AddItemsOverlay from './additems'; // Import the new AddItemsOverlay
 import AddCategoryOverlay from './overlay/addcategoryoverlay';
+import { useUser } from '@clerk/clerk-react';
+
 
 const CategoryPage = () => {
+  const {user} = useUser();
   const { branchName } = useParams();
   const [categories, setCategories] = useState([]);
   const [showReserveOverlay, setShowReserveOverlay] = useState(false);
@@ -85,12 +88,48 @@ const handleAddCategoryClose = async () => {
     return <div>No categories found.</div>;
     
   }
+  if (user?.publicMetadata?.role !== 'admin') {
+    console.log("not admin");
+    return (
+      <div className="flex flex-col justify-center items-center bg-white p-8 overflow-hidden">
+      <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Product Categories</h1>
+      <div className="flex mb-8">
+        <button
+          onClick={handleReserveClick}
+          className="mr-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Reserve Stock
+        </button>
+      </div>
+      <div className="flex justify-center overflow-hidden">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-screen-lg p-8">
+          {categories.map((category) => (
+            <div
+              key={category._id}
+              className="w-full h-32 flex items-center justify-center bg-orange-500 text-white text-2xl font-bold cursor-pointer rounded-md shadow-lg transition-transform transform hover:scale-105 hover:bg-green-600 active:scale-95 sm:w-40 md:w-48 md:h-48"
+              onClick={() => handleCategoryClick(category._id)}
+            >
+              {category.category}
+            </div>
+          ))}
+        </div>
+      </div>
+      {showReserveOverlay && (
+        <ReserveOverlay categories={categories} onClose={() => setShowReserveOverlay(false)} onReserve={handleReserve} />
+      )}
+    </div>
+    );
+  }
+
+  // If the user does not have the admin role, redirect them to the home page
+  
+
 
   return (
     <div className="flex flex-col justify-center items-center bg-white p-8 overflow-hidden">
       <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Product Categories</h1>
       <div className="flex mb-8">
-        <button
+      <button
           onClick={handleReserveClick}
           className="mr-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
