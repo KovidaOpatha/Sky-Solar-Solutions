@@ -26,10 +26,17 @@ const StockPage = () => {
     setShowOverlay(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Handle save logic here
-    window.location.reload(); // Reload the page to reflect the updated stock
+    // window.location.reload(); // Reload the page to reflect the updated stock
     setShowOverlay(false);
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+      const foundCategory = response.data[0]?.categories.find(cat => cat._id === categoryId);
+      setCategory(foundCategory);
+    } catch (error) {
+      console.error('Error fetching category:', error);
+    }
   };
 
   if (!category) {
@@ -47,7 +54,6 @@ const StockPage = () => {
         <Overlay
           category={category}
           branchName = {branchName}
-          // onClose={() => setShowOverlay(false)}
           onClose={handleSave}
         />
       )}
@@ -64,7 +70,6 @@ const StockPage = () => {
                   <div className="border border-black px-2 py-1 w-16 h-10 flex items-center justify-center rounded-md">
                     <span className="text-gray-800 font-bold text-xl">{product.remainingStock}</span>
                   </div>
-                  {/* Removed the settings button here */}
                 </div>
               </div>
             </div>
