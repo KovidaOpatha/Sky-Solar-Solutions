@@ -9,7 +9,6 @@ const ReserveOverlay = ({ categories, branchName, onClose }) => {
     const product = categories.find(category => category._id === categoryId)?.items.find(item => item._id === productId);
     if (!product) return;
 
-    // Ensure quantity is within available stock range and is not negative
     if (quantity >= 0 && quantity <= product.remainingStock) {
       setSelectedProducts(prevSelected => ({
         ...prevSelected,
@@ -19,7 +18,6 @@ const ReserveOverlay = ({ categories, branchName, onClose }) => {
         },
       }));
     } else if (quantity < 0) {
-      // If quantity is negative, set it to 0
       setSelectedProducts(prevSelected => ({
         ...prevSelected,
         [categoryId]: {
@@ -28,12 +26,11 @@ const ReserveOverlay = ({ categories, branchName, onClose }) => {
         },
       }));
     } else {
-      // If quantity exceeds available stock, set it to available stock
       setSelectedProducts(prevSelected => ({
         ...prevSelected,
         [categoryId]: {
           ...prevSelected[categoryId],
-          [productId]: product.remainingStock,
+          [productId]: Math.min(product.remainingStock, quantity),
         },
       }));
     }
@@ -92,30 +89,25 @@ const ReserveOverlay = ({ categories, branchName, onClose }) => {
                   const productId = e.target.value;
                   const categoryId = category._id;
                   const currentCategorySelection = selectedProducts[categoryId] || {};
-                  if (productId && !currentCategorySelection[productId]) {
-                    handleProductChange(categoryId, productId, 1);
-                  }
+                  const currentQuantity = currentCategorySelection[productId] || 0;
+                  const newQuantity = currentQuantity + 1; // Increase quantity by 1
+                  handleProductChange(categoryId, productId, newQuantity);
                 }}
               >
                 <option value="">Select Product</option>
-                {category.items.map(product => {
-                  if (product.remainingStock > 0) {
-                    return (
-                      <option key={product._id} value={product._id}>
-                        {product.name}
-                      </option>
-                    );
-                  } else {
-                    return null;
-                  }
-                })}
+                {category.items
+                  .filter(product => product.remainingStock > 0)
+                  .map(product => (
+                    <option key={product._id} value={product._id} disabled={selectedProducts[category._id]?.[product._id]}>
+                      {product.name}
+                    </option>
+                  ))}
               </select>
-              {selectedProducts[category._id] && Object.keys(selectedProducts[category._id]).map(productId => {
-                const product = category.items.find(item => item._id === productId);
-                const quantity = selectedProducts[category._id][productId];
-                if (quantity > 0) {
+              {selectedProducts[category._id] && category.items.map(product => {
+                if (selectedProducts[category._id][product._id]) {
+                  const quantity = selectedProducts[category._id][product._id];
                   return (
-                    <div key={productId} className="flex items-center mb-2 border-t border-gray-300 pt-2">
+                    <div key={product._id} className="flex items-center mb-2 border-t border-gray-300 pt-2">
                       <span className="mr-2">{product.name}</span>
                       <span className="mr-2">(Available: {product.remainingStock})</span>
                       <div className="flex items-center ml-auto">
@@ -123,12 +115,13 @@ const ReserveOverlay = ({ categories, branchName, onClose }) => {
                           type="number"
                           min="0"
                           value={quantity}
-                          onChange={(e) => handleProductChange(category._id, productId, parseInt(e.target.value, 10))}
+                          onChange={(e) => handleProductChange(category._id, product._id, parseInt(e.target.value, 10))}
+                          onClick={(e) => e.target.select()} // Selects the existing value on click
                           className="w-20 p-2 border rounded-md mr-2 text-right"
                         />
                         <FiTrash2
                           className="text-red-500 cursor-pointer"
-                          onClick={() => removeProduct(category._id, productId)}
+                          onClick={() => removeProduct(category._id, product._id)}
                         />
                       </div>
                     </div>
