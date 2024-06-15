@@ -63,8 +63,16 @@ const CategoryPage = () => {
   // Handle close
   const handleAddItemClose = async () => {
     setShowAddItemsOverlay(false);
-    const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
-    if (response.data && response.data.length > 0) {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+      if (response.data && response.data.length > 0) {
+        setCategories(response.data[0].categories);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
