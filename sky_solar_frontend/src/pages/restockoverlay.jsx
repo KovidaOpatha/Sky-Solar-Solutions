@@ -36,7 +36,7 @@ const RestockOverlay = ({ categories, branchName, onClose }) => {
       await Promise.all(
         updates.map(update => axios.post(`http://127.0.0.1:8000/stocks/${branchName}`, update))
       );
-      window.location.reload(); // Reload the page to reflect the updated stock
+      // window.location.reload(); // Reload the page to reflect the updated stock
       alert('Stock updated successfully');
       onClose();
     } catch (error) {
@@ -110,16 +110,16 @@ const RestockOverlay = ({ categories, branchName, onClose }) => {
             </div>
           </div>
         )}
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-end space-x-4 mt-4">
           <button
             onClick={onClose}
-            className="bg-red-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Close
           </button>
           <button
             onClick={handleSave}
-            className="bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="bg-orange-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
           >
             Save
           </button>

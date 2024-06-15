@@ -90,16 +90,17 @@ const ReserveOverlay = ({ categories, onClose, onReserve }) => {
             </div>
           </div>
         ))}
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-between mt-4">
           <button
             onClick={onClose}
-            className="w-full md:w-auto bg-red-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="flex-1 bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Close
           </button>
+          <div className="w-4" /> {/* Spacer */}
           <button
             onClick={handleReserve}
-            className="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="flex-1 bg-orange-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
           >
             Reserve
           </button>

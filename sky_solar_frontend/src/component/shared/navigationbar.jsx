@@ -12,8 +12,6 @@ const NavigationBar = () => {
           <img src={logo} alt="logo" className='w-24 h-auto' />
         </Link>
         <div className="flex space-x-4 items-center"> {/* Hide on mobile */}
-          <Link to="/about" className="hover:text-gray-300">About</Link>
-          <Link to="/contact" className="hover:text-gray-300">Contact</Link>
           <div className="flex gap-x-4 items-center">
                 <SignedIn>
                     <UserButton afterSignOutUrl="/sign-in"/>
