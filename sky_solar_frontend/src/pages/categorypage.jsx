@@ -52,12 +52,23 @@ const CategoryPage = () => {
     setShowReserveOverlay(false);
   };
 
+  //handle close
+  const handleAddItemClose = async () => {
+    setShowAddItemsOverlay(false);
+    const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+    if (response.data && response.data.length > 0) {
+        setCategories(response.data[0].categories);
+    }
+};
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (categories.length === 0) {
+    console.log(categories)
     return <div>No categories found.</div>;
+    
   }
 
   return (
@@ -84,7 +95,7 @@ const CategoryPage = () => {
         </button>
       </div>
       <div className="flex justify-center overflow-hidden">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-screen-lg p-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-screen-lg p-8">
           {categories.map((category) => (
             <div
               key={category._id}
@@ -103,7 +114,7 @@ const CategoryPage = () => {
         <RestockOverlay categories={categories} branchName={branchName} onClose={() => setShowRestockOverlay(false)} />
       )}
       {showAddItemsOverlay && (
-        <AddItemsOverlay categories={categories} branchName={branchName} onClose={() => setShowAddItemsOverlay(false)} />
+        <AddItemsOverlay categories={categories} branchName={branchName} onClose={handleAddItemClose} />
       )}
     </div>
   );
