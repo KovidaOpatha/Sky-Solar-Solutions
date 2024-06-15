@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FiTrash2 } from 'react-icons/fi';
 
 const ReserveOverlay = ({ categories, onClose, onReserve }) => {
   const [selectedProducts, setSelectedProducts] = useState({});
@@ -36,58 +37,60 @@ const ReserveOverlay = ({ categories, onClose, onReserve }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-4 md:p-8 rounded-lg shadow-lg w-full md:max-w-3xl">
-        <h2 className="text-lg md:text-2xl font-bold mb-4">Reserve Stock</h2>
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto">
+      <div className="bg-white p-4 md:p-8 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[80vh] overflow-y-auto">
+        <h2 className="text-2xl font-bold mb-4">Reserve Stock</h2>
         {categories.map(category => (
-          <div key={category._id} className="mb-4 overflow-y-auto max-h-80">
-            <h3 className="text-md md:text-lg font-semibold mb-2">{category.category}</h3>
-            <select
-              className="w-full md:w-auto mb-2 p-2 border rounded-md"
-              onChange={(e) => {
-                const productId = e.target.value;
-                const categoryId = category._id;
-                const currentCategorySelection = selectedProducts[categoryId] || {};
-                if (productId && !currentCategorySelection[productId]) {
-                  handleProductChange(categoryId, productId, 1);
+          <div key={category._id} className="mb-4">
+            <h3 className="text-lg font-bold text-orange-500 mb-2">{category.category}</h3>
+            <div className="border border-gray-300 rounded-md p-2">
+              <select
+                className="w-full p-2 border rounded-md mb-2"
+                onChange={(e) => {
+                  const productId = e.target.value;
+                  const categoryId = category._id;
+                  const currentCategorySelection = selectedProducts[categoryId] || {};
+                  if (productId && !currentCategorySelection[productId]) {
+                    handleProductChange(categoryId, productId, 1);
+                  }
+                }}
+              >
+                <option value="">Select Product</option>
+                {category.items.map(product => (
+                  <option key={product._id} value={product._id}>
+                    {product.name}
+                  </option>
+                ))}
+              </select>
+              {selectedProducts[category._id] && Object.keys(selectedProducts[category._id]).map(productId => {
+                const quantity = selectedProducts[category._id][productId];
+                if (quantity > 0) {
+                  return (
+                    <div key={productId} className="flex items-center mb-2 border-t border-gray-300 pt-2">
+                      <span className="mr-2">{category.items.find(item => item._id === productId).name}</span>
+                      <div className="flex items-center ml-auto">
+                        <input
+                          type="number"
+                          min="0"
+                          value={quantity}
+                          onChange={(e) => handleProductChange(category._id, productId, parseInt(e.target.value, 10))}
+                          className="w-20 p-2 border rounded-md mr-2 text-right"
+                        />
+                        <FiTrash2
+                          className="text-red-500 cursor-pointer"
+                          onClick={() => removeProduct(category._id, productId)}
+                        />
+                      </div>
+                    </div>
+                  );
+                } else {
+                  return null;
                 }
-              }}
-            >
-              <option value="">Select Product</option>
-              {category.items.map(product => (
-                <option key={product._id} value={product._id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-            {selectedProducts[category._id] && Object.keys(selectedProducts[category._id]).map(productId => {
-              const quantity = selectedProducts[category._id][productId];
-              if (quantity > 0) {
-                return (
-                  <div key={productId} className="flex items-center mb-2">
-                    <span className="mr-2">{category.items.find(item => item._id === productId).name}</span>
-                    <input
-                      type="number"
-                      min="0"
-                      value={quantity}
-                      onChange={(e) => handleProductChange(category._id, productId, parseInt(e.target.value, 10))}
-                      className="w-20 p-2 border rounded-md mr-2"
-                    />
-                    <button
-                      onClick={() => removeProduct(category._id, productId)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                );
-              } else {
-                return null;
-              }
-            })}
+              })}
+            </div>
           </div>
         ))}
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-end mt-4">
           <button
             onClick={onClose}
             className="w-full md:w-auto bg-red-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
