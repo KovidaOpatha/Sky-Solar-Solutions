@@ -4,6 +4,7 @@ import axios from 'axios';
 import ReserveOverlay from './reserveoverlay';
 import RestockOverlay from './restockoverlay';
 import AddItemsOverlay from './additems'; // Import the new AddItemsOverlay
+import AddCategoryOverlay from './overlay/addcategoryoverlay';
 
 const CategoryPage = () => {
   const { branchName } = useParams();
@@ -11,6 +12,7 @@ const CategoryPage = () => {
   const [showReserveOverlay, setShowReserveOverlay] = useState(false);
   const [showRestockOverlay, setShowRestockOverlay] = useState(false);
   const [showAddItemsOverlay, setShowAddItemsOverlay] = useState(false); // State for Add Items overlay
+  const [showAddCategoryOverlay, setShowAddCategoryOverlay] = useState(false); 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -52,6 +54,11 @@ const CategoryPage = () => {
     setShowReserveOverlay(false);
   };
 
+  const handleAddCategoryClick = () => {
+    setShowAddCategoryOverlay(true);
+  };
+
+
   //handle close
   const handleAddItemClose = async () => {
     setShowAddItemsOverlay(false);
@@ -59,6 +66,14 @@ const CategoryPage = () => {
     if (response.data && response.data.length > 0) {
         setCategories(response.data[0].categories);
     }
+};
+
+const handleAddCategoryClose = async () => {
+  setShowAddCategoryOverlay(false);
+  const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+  if (response.data && response.data.length > 0) {
+    setCategories(response.data[0].categories);
+  }
 };
 
   if (loading) {
@@ -93,6 +108,12 @@ const CategoryPage = () => {
         >
           Add Items
         </button>
+        <button
+          onClick={handleAddCategoryClick}
+          className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Add Category
+        </button>
       </div>
       <div className="flex justify-center overflow-hidden">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-screen-lg p-8">
@@ -115,6 +136,9 @@ const CategoryPage = () => {
       )}
       {showAddItemsOverlay && (
         <AddItemsOverlay categories={categories} branchName={branchName} onClose={handleAddItemClose} />
+      )}
+      {showAddCategoryOverlay && (
+        <AddCategoryOverlay branchName={branchName} onClose={handleAddCategoryClose}/>
       )}
     </div>
   );
