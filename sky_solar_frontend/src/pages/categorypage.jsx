@@ -12,8 +12,8 @@ const CategoryPage = () => {
   const [categories, setCategories] = useState([]);
   const [showReserveOverlay, setShowReserveOverlay] = useState(false);
   const [showRestockOverlay, setShowRestockOverlay] = useState(false);
-  const [showAddItemsOverlay, setShowAddItemsOverlay] = useState(false); // State for Add Items overlay
-  const [showAddCategoryOverlay, setShowAddCategoryOverlay] = useState(false); 
+  const [showAddItemsOverlay, setShowAddItemsOverlay] = useState(false);
+  const [showAddCategoryOverlay, setShowAddCategoryOverlay] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -58,24 +58,58 @@ const CategoryPage = () => {
   const handleAddCategoryClick = () => {
     setShowAddCategoryOverlay(true);
   };
-
-
-  //handle close
+  // Handle close
   const handleAddItemClose = async () => {
     setShowAddItemsOverlay(false);
     const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
     if (response.data && response.data.length > 0) {
-        setCategories(response.data[0].categories);
     }
   };
 
-const handleAddCategoryClose = async () => {
-  setShowAddCategoryOverlay(false);
-  const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
-  if (response.data && response.data.length > 0) {
-    setCategories(response.data[0].categories);
-  }
-};
+  const handleAddCategoryClose = async () => {
+    setShowAddCategoryOverlay(false);
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+      if (response.data && response.data.length > 0) {
+        setCategories(response.data[0].categories);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReserveClose = async () => {
+    setShowReserveOverlay(false);
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+      if (response.data && response.data.length > 0) {
+        setCategories(response.data[0].categories);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRestockClose = async () => {
+    setShowRestockOverlay(false);
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+      if (response.data && response.data.length > 0) {
+        setCategories(response.data[0].categories);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
