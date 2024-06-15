@@ -6,13 +6,14 @@ import RestockOverlay from './restockoverlay';
 import AddItemsOverlay from './additems'; // Import the new AddItemsOverlay
 import AddCategoryOverlay from './overlay/addcategoryoverlay';
 
+
 const CategoryPage = () => {
   const { branchName } = useParams();
   const [categories, setCategories] = useState([]);
   const [showReserveOverlay, setShowReserveOverlay] = useState(false);
   const [showRestockOverlay, setShowRestockOverlay] = useState(false);
   const [showAddItemsOverlay, setShowAddItemsOverlay] = useState(false); // State for Add Items overlay
-  const [showAddCategoryOverlay, setShowAddCategoryOverlay] = useState(false);
+  const [showAddCategoryOverlay, setShowAddCategoryOverlay] = useState(false); 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -58,22 +59,23 @@ const CategoryPage = () => {
     setShowAddCategoryOverlay(true);
   };
 
-  // Handle close
+
+  //handle close
   const handleAddItemClose = async () => {
     setShowAddItemsOverlay(false);
     const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
     if (response.data && response.data.length > 0) {
-      setCategories(response.data[0].categories);
+        setCategories(response.data[0].categories);
     }
   };
 
-  const handleAddCategoryClose = async () => {
-    setShowAddCategoryOverlay(false);
-    const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
-    if (response.data && response.data.length > 0) {
-      setCategories(response.data[0].categories);
-    }
-  };
+const handleAddCategoryClose = async () => {
+  setShowAddCategoryOverlay(false);
+  const response = await axios.get(`http://127.0.0.1:8000/stocks/${branchName}`);
+  if (response.data && response.data.length > 0) {
+    setCategories(response.data[0].categories);
+  }
+};
 
   if (loading) {
     return <div>Loading...</div>;
@@ -129,10 +131,10 @@ const CategoryPage = () => {
         </div>
       </div>
       {showReserveOverlay && (
-        <ReserveOverlay categories={categories} onClose={() => setShowReserveOverlay(false)} onReserve={handleReserve} />
+        <ReserveOverlay categories={categories} branchName={branchName} onClose={handleReserveClose} onReserve={handleReserve} />
       )}
       {showRestockOverlay && (
-        <RestockOverlay categories={categories} branchName={branchName} onClose={() => setShowRestockOverlay(false)} />
+        <RestockOverlay categories={categories} branchName={branchName} onClose={handleRestockClose} />
       )}
       {showAddItemsOverlay && (
         <AddItemsOverlay categories={categories} branchName={branchName} onClose={handleAddItemClose} />
