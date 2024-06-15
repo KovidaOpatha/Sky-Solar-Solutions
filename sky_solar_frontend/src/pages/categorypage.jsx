@@ -141,8 +141,9 @@ const CategoryPage = () => {
               key={category._id}
               className="w-full h-32 flex items-center justify-center bg-orange-500 text-white text-2xl font-bold cursor-pointer rounded-md shadow-lg transition-transform transform hover:scale-105 hover:bg-green-600 active:scale-95 sm:w-40 md:w-48 md:h-48"
               onClick={() => handleCategoryClick(category._id)}
-            >
+            ><div className="text-center text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl p-2 leading-tight">
               {category.category}
+            </div>
             </div>
           ))}
         </div>
@@ -153,14 +154,6 @@ const CategoryPage = () => {
     </div>
     );
   }
-
-  // If the user does not have the admin role, redirect them to the home page
-  
-
-
- 
-  // If the user does not have the admin role, redirect them to the home page
-  
 
 
   return (
