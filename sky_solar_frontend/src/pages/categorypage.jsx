@@ -166,7 +166,7 @@ const CategoryPage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-white p-8 overflow-hidden">
-      <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Product Categories</h1>
+      <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Product Categories {branchName}</h1>
       <div className="flex mb-8">
         <button
           onClick={handleReserveClick}
