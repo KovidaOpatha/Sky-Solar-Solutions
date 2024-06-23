@@ -91,7 +91,7 @@ const CategoryPage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-white p-8 overflow-hidden">
-      <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Product Categories</h1>
+      <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Product Categories {branchName}</h1>
       <div className="flex flex-col space-y-2 mb-8 md:flex-row md:space-y-0 md:space-x-2">
         <div className="flex flex-wrap justify-center md:justify-start">
           <button

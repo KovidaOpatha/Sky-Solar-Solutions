@@ -83,6 +83,7 @@ const StockPage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center px-4 py-8">
+      <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">{branchName}</h1>
       <div className="mb-4 flex justify-end w-full">
         <button
           onClick={handleManageStockClick}
