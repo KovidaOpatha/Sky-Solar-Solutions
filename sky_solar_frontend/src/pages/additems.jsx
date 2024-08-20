@@ -18,7 +18,7 @@ const AddItemsOverlay = ({ categories, onClose }) => {
         };
 
         try {
-            const response = await axios.post(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}/add-item`, {
+            const response = await axios.post(`https://sky-solar-solutions-back-end-production-257e.up.railway.app/stocks/${branchName}/add-item`, {
                 branchName,
                 categoryId: category,
                 newItem,

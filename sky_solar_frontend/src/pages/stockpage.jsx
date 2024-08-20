@@ -13,7 +13,7 @@ const StockPage = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await axios.get(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}`);
+        const response = await axios.get(`https://sky-solar-solutions-back-end-production-257e.up.railway.app/stocks/${branchName}`);
         const foundCategory = response.data[0]?.categories.find(cat => cat._id === categoryId);
         setCategory(foundCategory);
       } catch (error) {
@@ -33,7 +33,7 @@ const StockPage = () => {
     // window.location.reload(); // Reload the page to reflect the updated stock
     setShowOverlay(false);
     try {
-      const response = await axios.get(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}`);
+      const response = await axios.get(`https://sky-solar-solutions-back-end-production-257e.up.railway.app/stocks/${branchName}`);
       const foundCategory = response.data[0]?.categories.find(cat => cat._id === categoryId);
       setCategory(foundCategory);
     } catch (error) {

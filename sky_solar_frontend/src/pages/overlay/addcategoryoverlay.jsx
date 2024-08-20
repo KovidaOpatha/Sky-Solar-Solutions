@@ -11,7 +11,7 @@ const AddCategoryOverlay = ({ branchName, onClose }) => {
         }
 
         try {
-            await axios.post(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}/add-category`, { categoryName, branchName });
+            await axios.post(`https://sky-solar-solutions-back-end-production-257e.up.railway.app/stocks/${branchName}/add-category`, { categoryName, branchName });
             onClose();
         } catch (error) {
             console.error('Error adding category:', error);

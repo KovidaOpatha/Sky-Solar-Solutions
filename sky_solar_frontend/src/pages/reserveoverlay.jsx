@@ -65,7 +65,7 @@ const ReserveOverlay = ({ categories, branchName, onClose }) => {
       }
   
       await Promise.all(
-        updates.map(update => axios.post(`https://sky-solar-solutions-back-end-production.up.railway.app/stocks/${branchName}`, update))
+        updates.map(update => axios.post(`https://sky-solar-solutions-back-end-production-257e.up.railway.app/stocks/${branchName}`, update))
       );
       alert('Stock reserved successfully');
       onClose();
